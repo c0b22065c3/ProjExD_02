@@ -95,6 +95,7 @@ def main():
             kk_img = kk_death
             print("YOU DIED")
             return
+        
         """こうかとんの更新"""
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
