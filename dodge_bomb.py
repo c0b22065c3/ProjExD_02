@@ -13,6 +13,9 @@ delta = {
     pg.K_RIGHT:(5, 0),
 }
 
+# 加速度のリスト
+accs = [a for a in range(1, 10)]
+
 def check_bound(obj_rct: pg.Rect):
     """
     引数:こうかとんか爆弾のRect
@@ -57,7 +60,6 @@ def main():
     """こうかとんの初期設定"""
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
-    fliped_kk_img = pg.transform.flip(kk_img, True, False)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)
 
@@ -103,12 +105,15 @@ def main():
         screen.blit(kk_img, kk_rct)
 
         """爆弾の更新"""
-        bomb_rct.move_ip(vx, vy)
+        bomb_rct.move_ip(vx * accs[min(tmr // 500, 9)],
+                         vy * accs[min(tmr // 500, 9)])
         horizontal, vartical = check_bound(bomb_rct)
         if not horizontal:
             vx *= -1
         if not vartical:
             vy *= -1
+
+        """背景"""    
         screen.blit(bomb, bomb_rct)
 
         """時が流れる"""
