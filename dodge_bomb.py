@@ -13,6 +13,21 @@ delta = {
     pg.K_RIGHT:(5, 0),
 }
 
+def check_bound(obj_rct: pg.Rect):
+    """
+    引数:こうかとんか爆弾のRect
+    戻り値:タプル(横方向判定結果,縦方向判定結果)
+    画面内ならTrue,外ならFalse
+    """
+    horizontal, vartical = True, True
+    if (obj_rct.left < 0) or (WIDTH < obj_rct.right): # よこ
+        horizontal = False
+    
+    if (obj_rct.top < 0) or (HEIGHT < obj_rct.bottom): # たて
+        vartical = False
+    
+    return horizontal, vartical
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -52,11 +67,19 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_rct.move_ip(sum_mv)
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)
 
         """爆弾の更新"""
         bomb_rct.move_ip(vx, vy)
+        horizontal, vartical = check_bound(bomb_rct)
+        if not horizontal:
+            vx *= -1
+        if not vartical:
+            vy *= -1
         screen.blit(bomb, bomb_rct)
+
         pg.display.update()
         tmr += 1
         clock.tick(tick)
