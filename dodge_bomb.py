@@ -28,6 +28,25 @@ def check_bound(obj_rct: pg.Rect):
     
     return horizontal, vartical
 
+def roto_rct(obj_img: pg.image):
+    """
+    引数:回転させたいImage
+    戻り値:辞書
+    """
+    fliped = pg.transform.flip(obj_img, True, False)
+    return {
+        (0, 0):obj_img,
+        (-5, 0):pg.transform.rotozoom(obj_img, 0, 1.0),
+        (-5, -5):pg.transform.rotozoom(obj_img, 315, 1.0),
+        (0, -5):pg.transform.rotozoom(fliped, 90, 1.0),
+        (5, -5):pg.transform.rotozoom(fliped, 45, 1.0),
+        (5, 0):pg.transform.rotozoom(fliped, 0, 1.0),
+        (5, 5):pg.transform.rotozoom(fliped, 315, 1.0),
+        (0, 5):pg.transform.rotozoom(fliped, 270, 1.0),
+        (-5, 5):pg.transform.rotozoom(obj_img, 45, 1.0)
+    }
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -36,8 +55,11 @@ def main():
     """こうかとんの初期設定"""
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    fliped_kk_img = pg.transform.flip(kk_img, True, False)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)
+
+    dct = roto_rct(kk_img)
 
     """爆弾の初期設定"""
     bomb = pg.Surface((20, 20))
@@ -50,7 +72,7 @@ def main():
 
     clock = pg.time.Clock()
 
-    tick = 50
+    tick = 100
     tmr = 0
     while True:
         for event in pg.event.get():
@@ -72,6 +94,8 @@ def main():
             if key_lst[key]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
+        kk_img = dct[(sum_mv[0], sum_mv[1])]
+        
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
