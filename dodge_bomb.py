@@ -31,8 +31,10 @@ def check_bound(obj_rct: pg.Rect):
 def roto_rct(obj_img: pg.image):
     """
     引数:回転させたいImage
-    戻り値:辞書
+    戻り値:rotozoomされたSurfaceの辞書
+    キーは移動量のタプル
     """
+    # 反転画像
     fliped = pg.transform.flip(obj_img, True, False)
     return {
         (0, 0):obj_img,
@@ -95,7 +97,6 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_img = dct[(sum_mv[0], sum_mv[1])]
-        
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
@@ -110,7 +111,7 @@ def main():
             vy *= -1
         screen.blit(bomb, bomb_rct)
 
-        """時間が流れる"""
+        """時が流れる"""
         pg.display.update()
         tmr += 1
         clock.tick(tick)
