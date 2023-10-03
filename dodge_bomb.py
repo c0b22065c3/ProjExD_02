@@ -57,6 +57,12 @@ def main():
             if event.type == pg.QUIT: 
                 return
 
+        """こうかとんが爆死したら"""
+        if kk_rct.colliderect(bomb_rct):
+            print("YOU DIED")
+            return
+        
+        """背景画像"""
         screen.blit(bg_img, [0, 0])
 
         """こうかとんの更新"""
@@ -80,6 +86,7 @@ def main():
             vy *= -1
         screen.blit(bomb, bomb_rct)
 
+        """時間が流れる"""
         pg.display.update()
         tmr += 1
         clock.tick(tick)
