@@ -60,6 +60,8 @@ def main():
     """こうかとんの初期設定"""
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_death = pg.image.load("ex02/fig/8.png")
+    kk_death = pg.transform.rotozoom(kk_death, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)
 
@@ -83,14 +85,16 @@ def main():
             if event.type == pg.QUIT: 
                 return
 
-        """こうかとんが爆死したら"""
-        if kk_rct.colliderect(bomb_rct):
-            print("YOU DIED")
-            return
+        
         
         """背景画像"""
         screen.blit(bg_img, [0, 0])
 
+        """こうかとんが爆死したら"""
+        if kk_rct.colliderect(bomb_rct):
+            kk_img = kk_death
+            print("YOU DIED")
+            return
         """こうかとんの更新"""
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
@@ -112,8 +116,6 @@ def main():
             vx *= -1
         if not vartical:
             vy *= -1
-
-        """背景"""    
         screen.blit(bomb, bomb_rct)
 
         """時が流れる"""
