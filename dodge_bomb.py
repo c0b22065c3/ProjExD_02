@@ -21,6 +21,9 @@ def main():
     bomb_rct = bomb.get_rect()
     bomb_x, bomb_y = ran(0, WIDTH), ran(0, HEIGHT)
     bomb_rct.center = (bomb_x, bomb_y)
+    vx, vy = +5, +5
+
+    tick = 50
 
     tmr = 0
     while True:
@@ -30,10 +33,11 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
+        bomb_rct.move_ip(vx, vy)
         screen.blit(bomb, bomb_rct)
         pg.display.update()
         tmr += 1
-        clock.tick(50)
+        clock.tick(tick)
 
 
 if __name__ == "__main__":
